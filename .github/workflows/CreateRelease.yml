@@ -9,6 +9,8 @@ on:
       sourceBranch:
         description: 'Source branch (e.g. main)'
         required: true
+permissions:
+  contents: write  # needed to push commits/tags and create releases
 
 jobs:
   create_release:
