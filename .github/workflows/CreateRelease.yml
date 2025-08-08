@@ -1,0 +1,62 @@
+name: Create New Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseNumber:
+        description: 'Release number (e.g. 1.2.3)'
+        required: true
+      sourceBranch:
+        description: 'Source branch (e.g. main)'
+        required: true
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.sourceBranch }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Git
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Update version in component.xml
+        run: |
+          sed -i '0,/version="/s/\(version="\)[^"]*\("\)/\1'"${{ github.event.inputs.releaseNumber }}"'\2/' component.xml
+
+      - name: Move upgrade/UpcomingRelease to upgrade/${{ github.event.inputs.releaseNumber }}
+        run: |
+          if [ -d upgrade/UpcomingRelease ]; then
+            git mv upgrade/UpcomingRelease upgrade/${{ github.event.inputs.releaseNumber }}
+          else
+            echo "Directory upgrade/UpcomingRelease does not exist!"
+          fi
+
+      - name: Create empty upgrade/UpcomingRelease folder
+        run: |
+          mkdir -p upgrade/UpcomingRelease
+          cat <<EOF > upgrade/UpcomingRelease/UpgradeData.xml
+                 <?xml version="1.0" encoding="UTF-8"?>
+                 <entity-facade-xml type="ext-upgrade">
+                 </entity-facade-xml>
+              EOF
+          
+      - name: Commit and push changes
+        run: |
+          git add component.xml upgrade/
+          git commit -m "chore: prepare release ${{ github.event.inputs.releaseNumber }}"
+          git push origin ${{ github.event.inputs.sourceBranch }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.releaseNumber }}
+          target_commitish: ${{ github.event.inputs.sourceBranch }}
+          name: Release ${{ github.event.inputs.releaseNumber }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
