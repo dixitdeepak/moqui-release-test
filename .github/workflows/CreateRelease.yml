@@ -37,9 +37,9 @@ jobs:
         run: |
           git tag ${{ github.event.inputs.releaseNumber }}
           if git push --dry-run origin ${{ github.event.inputs.releaseNumber }}; then
-            echo "✅ Tag creation permitted. Proceeding with release."
+            echo "Tag creation permitted. Proceeding with release."
           else
-            echo "❌ You do not have permission to create this tag. Aborting."
+            echo "You do not have permission to create this tag. Aborting."
             exit 1
           fi
 
