@@ -39,7 +39,7 @@ jobs:
 
       - name: Update version in component.xml
         run: |
-          sed -i '0,/version="/s/\(version="\)[^"]*\("\)/\1'"${{ github.event.inputs.releaseNumber }}"'\2/' component.xml
+          sed -i '0,/version="/s/version="[0-9.]\+"/version="${{ env.tag_name }}" /' component.xml
 
       - name: Move upgrade/UpcomingRelease to upgrade/${{ github.event.inputs.releaseNumber }}
         run: |
