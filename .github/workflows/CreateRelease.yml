@@ -9,6 +9,10 @@ on:
       sourceBranch:
         description: 'Source branch (e.g. main)'
         required: true
+      makeLatest:
+        description: 'Mark this release as the latest?'
+        required: false
+        default: 'true' # or false if you'd rather opt out by default
 permissions:
   contents: write  # needed to push commits/tags and create releases
 
@@ -60,5 +64,7 @@ jobs:
           tag_name: ${{ github.event.inputs.releaseNumber }}
           target_commitish: ${{ github.event.inputs.sourceBranch }}
           name: Release ${{ github.event.inputs.releaseNumber }}
+          generate_release_notes: true
+          make_latest: ${{ github.event.inputs.makeLatest || 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
