@@ -12,15 +12,13 @@ on:
       makeLatest:
         description: 'Mark this release as the latest?'
         required: false
-        default: 'true'
-
+        default: 'true' # or false if you'd rather opt out by default
 permissions:
-  contents: write  # Required to push commits/tags and create releases
+  contents: write  # needed to push commits/tags and create releases
 
 jobs:
   create_release:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout source branch
         uses: actions/checkout@v4
@@ -32,16 +30,6 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-
-      - name: Check tag creation permission (dry-run)
-        run: |
-          git tag ${{ github.event.inputs.releaseNumber }}
-          if git push --dry-run origin ${{ github.event.inputs.releaseNumber }}; then
-            echo "Tag creation permitted. Proceeding with release."
-          else
-            echo "You do not have permission to create this tag. Aborting."
-            exit 1
-          fi
 
       - name: Update version in component.xml
         run: |
@@ -59,11 +47,11 @@ jobs:
         run: |
           mkdir -p upgrade/UpcomingRelease
           cat <<EOF > upgrade/UpcomingRelease/UpgradeData.xml
-                  <?xml version="1.0" encoding="UTF-8"?>
-                  <entity-facade-xml type="ext-upgrade">
-                  </entity-facade-xml>
+                 <?xml version="1.0" encoding="UTF-8"?>
+                 <entity-facade-xml type="ext-upgrade">
+                 </entity-facade-xml>
               EOF
-
+          
       - name: Commit and push changes
         run: |
           git add component.xml upgrade/
