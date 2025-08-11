@@ -94,7 +94,7 @@ jobs:
         if: env.is_ofbiz == 'true'
         shell: bash
         run: |
-          echo "${{ env.component_version }}" > VERSION
+          echo "${{ env.tag_name }}" > VERSION
           echo "VERSION file content:"
           cat VERSION
 
