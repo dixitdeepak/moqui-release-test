@@ -48,8 +48,10 @@ jobs:
           IS_OFBIZ=false
           if [[ -f "component.xml" ]]; then 
             IS_MOQUI=true;
+            echo "Creating release $TAG_NAME for Moqui component"
           elif [[ -f "ofbiz-component.xml" ]]; then 
             IS_OFBIZ=true; 
+            echo "Creating release $TAG_NAME for OFBiz plugin"
           fi
 
           if [[ "$IS_MOQUI" == false && "$IS_OFBIZ" == false ]]; then
