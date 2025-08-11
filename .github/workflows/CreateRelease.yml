@@ -119,16 +119,18 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: prepare release ${{ env.tag_name }}"
+            git commit -m "Prepare release ${{ env.tag_name }}"
             git push origin "${{ github.event.inputs.sourceBranch }}"
           fi
+      - name: Set formatted date
+        run: echo "release_date=$(date +'%d %b %Y')" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.tag_name }}
           target_commitish: ${{ github.event.inputs.sourceBranch }}
-          name: Release ${{ env.tag_name }}
+          name: ${{ env.tag_name }} (${{ env.release_date }})
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
