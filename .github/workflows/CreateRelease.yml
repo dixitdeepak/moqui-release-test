@@ -135,7 +135,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify Google Chat (success)
-        if: success() && secrets.GCHAT_WEBHOOK1 != ''
+        if: success()
         env:
           GCHAT_WEBHOOK: ${{ secrets.GCHAT_WEBHOOK }}
         run: |
