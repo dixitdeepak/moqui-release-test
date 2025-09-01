@@ -137,7 +137,7 @@ jobs:
       - name: Notify Google Chat (success)
         if: success()
         env:
-          GCHAT_WEBHOOK: ${{ secrets.GCHAT_WEBHOOK1 }}
+          GCHAT_WEBHOOK: ${{ secrets.GCHAT_WEBHOOK }}
         run: |
           if [ -z "$GCHAT_WEBHOOK" ]; then
             echo "GCHAT_WEBHOOK not set — skipping Google Chat notification."
