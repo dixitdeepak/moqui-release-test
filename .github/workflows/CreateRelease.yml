@@ -139,6 +139,10 @@ jobs:
         env:
           GCHAT_WEBHOOK: ${{ secrets.GCHAT_WEBHOOK }}
         run: |
+          if [ -z "$GCHAT_WEBHOOK" ]; then
+            echo "GCHAT_WEBHOOK not set — skipping Google Chat notification."
+            exit 0
+          fi
           tag="${{ env.tag_name }}"
           repo="${{ github.repository }}"
           run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
