@@ -148,5 +148,5 @@ jobs:
           run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           rel_url="${{ github.server_url }}/${{ github.repository }}/releases/tag/${tag}"
 
-          payload=$(jq -n --arg t "Release *$tag* published for *$repo*\n• Run: $run_url\n• Release: $rel_url" '{text:$t}')
+          payload=$(jq -n --arg t "Release *$tag* published for *$repo* \n • Release: $rel_url" '{text:$t}')
           curl -sS -X POST -H 'Content-Type: application/json' -d "$payload" "$GCHAT_WEBHOOK"
