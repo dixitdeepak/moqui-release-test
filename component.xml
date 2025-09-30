@@ -19,7 +19,7 @@
 -->
 
 <component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/moqui-conf-3.xsd"
-        name="moqui-release-test" version="4.14.4">
+        name="moqui-release-test" version="12.1.1">
     <!-- no dependencies -->
   
 </component>
