@@ -63,6 +63,8 @@ jobs:
           echo "component_version=$PLAIN_VERSION" >> "$GITHUB_ENV"
           echo "is_moqui=$IS_MOQUI" >> "$GITHUB_ENV"
           echo "is_ofbiz=$IS_OFBIZ" >> "$GITHUB_ENV"
+          echo "::notice title=Release Created::$env.tag_name"
+
 
       - name: Move upgrade/UpcomingRelease → upgrade/${{ env.tag_name }}
         shell: bash
